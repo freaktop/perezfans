@@ -1,0 +1,2 @@
+/// Non-web.
+String resolveWebRecaptchaSiteKey() => '';

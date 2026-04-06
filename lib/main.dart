@@ -6,10 +6,16 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'auth/firebase_auth/firebase_user_provider.dart';
 import 'auth/firebase_auth/auth_util.dart';
+import 'auth/base_auth_user_provider.dart';
 
 import 'backend/firebase/firebase_config.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
+import 'flutter_flow/nav/nav.dart';
+import 'app_state.dart';
+
+// Add alias for easier reference
+Stream<BaseAuthUser> perezFansFirebaseUserStream() => flutterTokTikTokCloneTemplateFirebaseUserStream();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
