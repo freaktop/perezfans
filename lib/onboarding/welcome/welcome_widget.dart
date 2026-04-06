@@ -60,7 +60,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
                   child: Image.asset(
-                    'assets/images/fluttok-logo.png',
+                    'assets/images/perezfans_logo.png',
                     width: 80.0,
                     height: 80.0,
                     fit: BoxFit.cover,
@@ -68,7 +68,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
                 ),
               ),
               Text(
-                'FlutTok',
+                'PerezFans',
                 textAlign: TextAlign.center,
                 style: FlutterFlowTheme.of(context).displaySmall.override(
                       font: GoogleFonts.poppins(
@@ -88,7 +88,8 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: Text(
-                  'A beautiful TikTok clone for FlutterFlow',
+                  'Share Your Content & Go Live',
+
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         font: GoogleFonts.poppins(
                           fontWeight: FlutterFlowTheme.of(context)
