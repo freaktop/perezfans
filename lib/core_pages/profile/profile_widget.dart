@@ -391,43 +391,83 @@ class _ProfileWidgetState extends State<ProfileWidget>
                               ],
                             ),
                           ),
-                          FFButtonWidget(
-                            onPressed: () async {
-                              context.pushNamed(EditProfileWidget.routeName);
-                            },
-                            text: 'Edit Profile',
-                            options: FFButtonOptions(
-                              width: 130.0,
-                              height: 40.0,
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              color: FlutterFlowTheme.of(context).lineColor,
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .titleSmall
-                                  .override(
-                                    font: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .titleSmall
-                                          .fontStyle,
-                                    ),
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                    letterSpacing: 0.0,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .titleSmall
-                                        .fontStyle,
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              FFButtonWidget(
+                                onPressed: () async {
+                                  context.pushNamed(EditProfileWidget.routeName);
+                                },
+                                text: 'Edit Profile',
+                                options: FFButtonOptions(
+                                  width: 130.0,
+                                  height: 40.0,
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 0.0, 0.0),
+                                  iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 0.0, 0.0),
+                                  color: FlutterFlowTheme.of(context).lineColor,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .titleSmall
+                                      .override(
+                                        font: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FlutterFlowTheme.of(context)
+                                              .titleSmall
+                                              .fontStyle,
+                                        ),
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                        letterSpacing: 0.0,
+                                        fontWeight: FontWeight.w500,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .titleSmall
+                                            .fontStyle,
+                                      ),
+                                  elevation: 0.0,
+                                  borderSide: BorderSide(
+                                    color: Colors.transparent,
+                                    width: 1.0,
                                   ),
-                              elevation: 0.0,
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                                width: 1.0,
+                                  borderRadius: BorderRadius.circular(6.0),
+                                ),
                               ),
-                              borderRadius: BorderRadius.circular(6.0),
-                            ),
+                              const SizedBox(width: 8.0),
+                              FFButtonWidget(
+                                onPressed: () async {
+                                  context.pushNamed(CreatorHubWidget.routeName);
+                                },
+                                text: 'Go Live',
+                                icon: const Icon(
+                                  Icons.live_tv,
+                                  size: 18.0,
+                                ),
+                                options: FFButtonOptions(
+                                  width: 110.0,
+                                  height: 40.0,
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 0.0, 0.0),
+                                  iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 0.0, 0.0),
+                                  color:
+                                      FlutterFlowTheme.of(context).primary,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .titleSmall
+                                      .override(
+                                        font: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryBtnText,
+                                        letterSpacing: 0.0,
+                                      ),
+                                  elevation: 2.0,
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(6.0),
+                                ),
+                              ),
+                            ],
                           ),
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(

@@ -349,11 +349,14 @@ exports.createAgoraRtcToken = functions.https.onCall(async (data, context) => {
     const uid = context.auth.uid;
     const role = RtcRole.PUBLISHER;
 
+    // Use a numeric UID derived from the user's UID for Agora compatibility
+    const rtcUid = Math.abs(uid.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)) % 2147483647 || 1;
+
     const token = RtcTokenBuilder.buildTokenWithUid(
       appId,
       appCertificate,
       channelName,
-      0,
+      rtcUid,
       role,
       Math.floor(Date.now() / 1000) + 3600
     );
@@ -361,7 +364,7 @@ exports.createAgoraRtcToken = functions.https.onCall(async (data, context) => {
     return {
       appId,
       token,
-      rtcUid: 0,
+      rtcUid,
       channelName,
     };
   } catch (err) {
