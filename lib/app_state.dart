@@ -34,7 +34,7 @@ class FFAppState extends ChangeNotifier {
     _newVideo = value;
   }
 
-  String _websiteURL = 'fluttok.com';
+  String _websiteURL = 'perezfans.com';
   String get websiteURL => _websiteURL;
   set websiteURL(String value) {
     _websiteURL = value;

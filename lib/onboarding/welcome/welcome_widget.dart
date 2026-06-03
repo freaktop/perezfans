@@ -61,8 +61,8 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
                   borderRadius: BorderRadius.circular(20.0),
                   child: Image.asset(
                     'assets/images/perezfans_logo.png',
-                    width: 80.0,
-                    height: 80.0,
+                    width: 100.0,
+                    height: 100.0,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -88,7 +88,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: Text(
-                  'Share Your Content & Go Live',
+                  'Catch It Live 🔴',
 
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         font: GoogleFonts.poppins(
@@ -154,7 +154,14 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
                 padding: EdgeInsetsDirectional.fromSTEB(30.0, 10.0, 30.0, 0.0),
                 child: FFButtonWidget(
                   onPressed: () {
-                    print('Button pressed ...');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Facebook login coming soon. Use email login for now.',
+                          style: GoogleFonts.poppins(),
+                        ),
+                      ),
+                    );
                   },
                   text: 'Continue with Facebook',
                   icon: FaIcon(
@@ -198,7 +205,14 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
                 padding: EdgeInsetsDirectional.fromSTEB(30.0, 10.0, 30.0, 0.0),
                 child: FFButtonWidget(
                   onPressed: () {
-                    print('Button pressed ...');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Google login coming soon. Use email login for now.',
+                          style: GoogleFonts.poppins(),
+                        ),
+                      ),
+                    );
                   },
                   text: 'Continue with Google',
                   icon: FaIcon(

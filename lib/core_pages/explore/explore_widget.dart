@@ -23,22 +23,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final List<_CategoryInfo> _categories = const [
-    _CategoryInfo('TikTok', Icons.music_video),
-    _CategoryInfo('Dance', Icons.accessibility_new),
-    _CategoryInfo('Music', Icons.music_note),
-    _CategoryInfo('Comedy', Icons.emoji_emotions),
-    _CategoryInfo('Sports', Icons.sports_soccer),
-    _CategoryInfo('Gaming', Icons.sports_esports),
-    _CategoryInfo('Education', Icons.school),
-    _CategoryInfo('Fitness', Icons.fitness_center),
-    _CategoryInfo('Cooking', Icons.restaurant),
-    _CategoryInfo('Art', Icons.palette),
-    _CategoryInfo('Travel', Icons.flight),
-    _CategoryInfo('Fashion', Icons.checkroom),
-    _CategoryInfo('Live', Icons.live_tv),
-    _CategoryInfo('Exclusive', Icons.star),
-  ];
+  List<_CategoryInfo> get _categories => _allCategories;
 
   @override
   void initState() {
@@ -94,48 +79,12 @@ class _ExploreWidgetState extends State<ExploreWidget> {
                 child: Wrap(
                   spacing: 8.0,
                   runSpacing: 8.0,
-                  children: _categories.map((cat) {
-                    return InkWell(
-                      onTap: () {
-                        context.pushNamed(
-                          SearchWidget.routeName,
-                          queryParameters: {
-                            'q': cat.label,
-                          }.withoutNulls,
-                        );
-                      },
-                      child: Container(
-                        width: MediaQuery.sizeOf(context).width / 4 - 20.0,
-                        constraints: const BoxConstraints(maxWidth: 100.0),
-                        decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).secondaryBackground,
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                cat.icon,
-                                color: FlutterFlowTheme.of(context).primary,
-                                size: 28.0,
-                              ),
-                              const SizedBox(height: 6.0),
-                              Text(
-                                cat.label,
-                                textAlign: TextAlign.center,
-                                style: FlutterFlowTheme.of(context).bodySmall.override(
-                                      font: GoogleFonts.poppins(),
-                                      letterSpacing: 0.0,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  }).toList(),
+                  children: [
+                    ..._categories.take(8).map((cat) {
+                      return _categoryChip(context, cat);
+                    }),
+                    _moreCategoriesChip(context),
+                  ],
                 ),
               ),
               _suggestedUsersSection(context),
@@ -265,6 +214,215 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     );
   }
 }
+
+Widget _categoryChip(BuildContext context, _CategoryInfo cat) {
+  return InkWell(
+    onTap: () {
+      context.pushNamed(
+        SearchWidget.routeName,
+        queryParameters: {
+          'q': cat.label,
+        }.withoutNulls,
+      );
+    },
+    child: Container(
+      width: MediaQuery.sizeOf(context).width / 4 - 20.0,
+      constraints: const BoxConstraints(maxWidth: 100.0),
+      decoration: BoxDecoration(
+        color: FlutterFlowTheme.of(context).secondaryBackground,
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              cat.icon,
+              color: FlutterFlowTheme.of(context).primary,
+              size: 28.0,
+            ),
+            const SizedBox(height: 6.0),
+            Text(
+              cat.label,
+              textAlign: TextAlign.center,
+              style: FlutterFlowTheme.of(context).bodySmall.override(
+                    font: GoogleFonts.poppins(),
+                    letterSpacing: 0.0,
+                  ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+Widget _moreCategoriesChip(BuildContext context) {
+  return InkWell(
+    onTap: () {
+      _showAllCategories(context);
+    },
+    child: Container(
+      width: MediaQuery.sizeOf(context).width / 4 - 20.0,
+      constraints: const BoxConstraints(maxWidth: 100.0),
+      decoration: BoxDecoration(
+        color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12.0),
+        border: Border.all(
+          color: FlutterFlowTheme.of(context).primary.withOpacity(0.3),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.more_horiz,
+              color: FlutterFlowTheme.of(context).primary,
+              size: 28.0,
+            ),
+            const SizedBox(height: 6.0),
+            Text(
+              'More',
+              textAlign: TextAlign.center,
+              style: FlutterFlowTheme.of(context).bodySmall.override(
+                    font: GoogleFonts.poppins(),
+                    letterSpacing: 0.0,
+                    color: FlutterFlowTheme.of(context).primary,
+                  ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+void _showAllCategories(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+    ),
+    builder: (sheetContext) {
+      final categories = _allCategories;
+      return SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 50.0,
+                  height: 4.0,
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).secondaryText,
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              Text(
+                'All Categories',
+                style: FlutterFlowTheme.of(context).titleLarge,
+              ),
+              const SizedBox(height: 16.0),
+              SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.4,
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    mainAxisSpacing: 8.0,
+                    crossAxisSpacing: 8.0,
+                    childAspectRatio: 0.85,
+                  ),
+                  itemCount: categories.length,
+                  itemBuilder: (ctx, i) {
+                    final cat = categories[i];
+                    return InkWell(
+                      onTap: () {
+                        Navigator.pop(ctx);
+                        context.pushNamed(
+                          SearchWidget.routeName,
+                          queryParameters: {
+                            'q': cat.label,
+                          }.withoutNulls,
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context)
+                              .primaryBackground,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              cat.icon,
+                              color: FlutterFlowTheme.of(context).primary,
+                              size: 28.0,
+                            ),
+                            const SizedBox(height: 6.0),
+                            Text(
+                              cat.label,
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodySmall
+                                  .override(
+                                    font: GoogleFonts.poppins(),
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+const List<_CategoryInfo> _allCategories = [
+  _CategoryInfo('For You', Icons.trending_up),
+  _CategoryInfo('Live Now', Icons.live_tv),
+  _CategoryInfo('Music', Icons.music_note),
+  _CategoryInfo('Dance', Icons.accessibility_new),
+  _CategoryInfo('Comedy', Icons.emoji_emotions),
+  _CategoryInfo('Gaming', Icons.sports_esports),
+  _CategoryInfo('Sports', Icons.sports_soccer),
+  _CategoryInfo('Fashion', Icons.checkroom),
+  _CategoryInfo('Beauty', Icons.face),
+  _CategoryInfo('Cooking', Icons.restaurant),
+  _CategoryInfo('Travel', Icons.flight),
+  _CategoryInfo('Art', Icons.palette),
+  _CategoryInfo('Education', Icons.school),
+  _CategoryInfo('Fitness', Icons.fitness_center),
+  _CategoryInfo('Animals', Icons.pets),
+  _CategoryInfo('Nature', Icons.landscape),
+  _CategoryInfo('Tech', Icons.computer),
+  _CategoryInfo('ASMR', Icons.headphones),
+  _CategoryInfo('Vlog', Icons.videocam),
+  _CategoryInfo('DIY', Icons.build),
+  _CategoryInfo('Finance', Icons.business),
+  _CategoryInfo('Podcast', Icons.mic),
+  _CategoryInfo('Relationships', Icons.favorite),
+  _CategoryInfo('Exclusive', Icons.star),
+];
 
 class _CategoryInfo {
   final String label;

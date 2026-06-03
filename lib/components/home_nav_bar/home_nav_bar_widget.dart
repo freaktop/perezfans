@@ -87,7 +87,7 @@ class _HomeNavBarWidgetState extends State<HomeNavBarWidget> {
                   buttonSize: 50.0,
                   icon: Icon(
                     Icons.explore,
-                    color: Color(0xFF9299A1),
+                    color: Colors.white,
                     size: 30.0,
                   ),
                   onPressed: () async {
@@ -197,7 +197,7 @@ class _HomeNavBarWidgetState extends State<HomeNavBarWidget> {
                   buttonSize: 50.0,
                   icon: Icon(
                     Icons.live_tv,
-                    color: Color(0xFF9299A1),
+                    color: Colors.white,
                     size: 30.0,
                   ),
                   onPressed: () async {
@@ -220,7 +220,7 @@ class _HomeNavBarWidgetState extends State<HomeNavBarWidget> {
                   buttonSize: 50.0,
                   icon: Icon(
                     Icons.person,
-                    color: Color(0xFF9299A1),
+                    color: Colors.white,
                     size: 30.0,
                   ),
                   onPressed: () async {
