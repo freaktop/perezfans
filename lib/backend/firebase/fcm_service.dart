@@ -24,7 +24,7 @@ class FcmService {
     if (settings.authorizationStatus == AuthorizationStatus.denied) return;
 
     final token = await messaging.getToken(
-      vapidKey: 'BG-1wN0Oc4xpeQQcFn_RGsCmh9p-BkQ3gJWBEzNXfnQCgAe3Nthl0QUdH5sz-JbIhxeYRdsWVFGNyvLBeFgPz94',
+      vapidKey: 'YWo4Bk5Ae5jKjm22FJcKJRuyAnJOwUHHRaQtDVK0jgY',
     );
 
     if (token != null) {
