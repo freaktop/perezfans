@@ -13,6 +13,11 @@ class NewPostModel extends FlutterFlowModel<NewPostWidget> {
       descriptionInputTextControllerValidator;
   // State field(s) for SwitchAllowComments widget.
   bool? switchAllowCommentsValue;
+  // State field(s) for soundTextController widget.
+  FocusNode? soundFocusNode;
+  TextEditingController? soundTextController;
+  String? Function(BuildContext, String?)?
+      soundTextControllerValidator;
 
   @override
   void initState(BuildContext context) {}
@@ -21,5 +26,7 @@ class NewPostModel extends FlutterFlowModel<NewPostWidget> {
   void dispose() {
     descriptionInputFocusNode?.dispose();
     descriptionInputTextController?.dispose();
+    soundFocusNode?.dispose();
+    soundTextController?.dispose();
   }
 }

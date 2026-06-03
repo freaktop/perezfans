@@ -6,7 +6,7 @@
     "firebase-functions": "^4.4.1",
     "braintree": "^3.6.0",
     "@mux/mux-node": "^7.3.3",
-    "stripe": "^8.0.1",
+    "stripe": "^17.0.0",
     "axios": "1.13.5",
     "razorpay": "^2.8.4",
     "qs": "^6.7.0",
@@ -23,10 +23,10 @@
   },
   "scripts": {
     "lint": "./node_modules/.bin/eslint --max-warnings=0 .",
-    "serve": "firebase -P flutter-tok emulators:start --only functions",
-    "shell": "firebase -P flutter-tok functions:shell",
+    "serve": "firebase -P perezfans emulators:start --only functions",
+    "shell": "firebase -P perezfans functions:shell",
     "start": "npm run shell",
-    "logs": "firebase -P flutter-tok functions:log",
+    "logs": "firebase -P perezfans functions:log",
     "compile": "cp ../../tsconfig.template.json ./tsconfig-compile.json && tsc --project tsconfig-compile.json"
   },
   "engines": {

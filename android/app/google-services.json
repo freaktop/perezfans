@@ -1,48 +1,40 @@
 {
   "project_info": {
-    "project_number": "136146624285",
-    "project_id": "flutter-tok",
-    "storage_bucket": "flutter-tok.appspot.com"
+    "project_number": "547851710384",
+    "project_id": "perezfans",
+    "storage_bucket": "perezfans.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:136146624285:android:67742cf40e59749d940bf4",
+        "mobilesdk_app_id": "1:547851710384:android:5972ce4a27fe1dd6acb075",
         "android_client_info": {
-          "package_name": "com.flutterflow.fluttertok"
+          "package_name": "com.perezcode.perezfans"
         }
       },
       "oauth_client": [
         {
-          "client_id": "136146624285-nqs5la7jpdgp92jcpcadk1e750ll0ik8.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.flutterflow.fluttertok",
-            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
-          }
-        },
-        {
-          "client_id": "136146624285-48n8nu9jm5ulaoujvlflb4s70nkv3cu3.apps.googleusercontent.com",
+          "client_id": "547851710384-bjjahn1ohpierni9eg1mafivgm3erhrg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDWZ2ebY0S7pIZJJAySYFaXT6zVSTEmAHY"
+          "current_key": "AIzaSyDHroD1077L3L3nAki4is79GNkv-Ry6lsg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "136146624285-48n8nu9jm5ulaoujvlflb4s70nkv3cu3.apps.googleusercontent.com",
+              "client_id": "547851710384-bjjahn1ohpierni9eg1mafivgm3erhrg.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "136146624285-v91vjhaabkjf7e7066vemf9esvnsvbvo.apps.googleusercontent.com",
+              "client_id": "547851710384-updkriqn9q041mrmk8il78s231srb9pi.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.flutterflow.fluttertok"
+                "bundle_id": "com.perezcode.perezfans"
               }
             }
           ]

@@ -199,7 +199,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                     child: Image.network(
                                       valueOrDefault<String>(
                                         currentUserPhoto,
-                                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/flutter-tok-tik-tok-clone-template-b4cltx/assets/mtz39cbrrz9b/default-avatar-2.png',
+                                        'https://ui-avatars.com/api/?name=U&background=6C63FF&color=fff&size=128',
                                       ),
                                       width: 80.0,
                                       height: 80.0,

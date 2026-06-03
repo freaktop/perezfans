@@ -68,7 +68,30 @@ class _HomeNavBarWidgetState extends State<HomeNavBarWidget> {
                     size: 30.0,
                   ),
                   onPressed: () {
-                    print('IconButton pressed ...');
+                    print('Home');
+                  },
+                ),
+                FlutterFlowIconButton(
+                  borderColor: Colors.transparent,
+                  borderRadius: 30.0,
+                  borderWidth: 1.0,
+                  buttonSize: 50.0,
+                  icon: Icon(
+                    Icons.explore,
+                    color: Color(0xFF9299A1),
+                    size: 30.0,
+                  ),
+                  onPressed: () async {
+                    context.pushNamed(
+                      ExploreWidget.routeName,
+                      extra: <String, dynamic>{
+                        '__transition_info__': TransitionInfo(
+                          hasTransition: true,
+                          transitionType: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 0),
+                        ),
+                      },
+                    );
                   },
                 ),
                 InkWell(
@@ -157,6 +180,29 @@ class _HomeNavBarWidgetState extends State<HomeNavBarWidget> {
                       ],
                     ),
                   ),
+                ),
+                FlutterFlowIconButton(
+                  borderColor: Colors.transparent,
+                  borderRadius: 30.0,
+                  borderWidth: 1.0,
+                  buttonSize: 50.0,
+                  icon: Icon(
+                    Icons.live_tv,
+                    color: Color(0xFF9299A1),
+                    size: 30.0,
+                  ),
+                  onPressed: () async {
+                    context.pushNamed(
+                      CreatorHubWidget.routeName,
+                      extra: <String, dynamic>{
+                        '__transition_info__': TransitionInfo(
+                          hasTransition: true,
+                          transitionType: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 0),
+                        ),
+                      },
+                    );
+                  },
                 ),
                 FlutterFlowIconButton(
                   borderColor: Colors.transparent,

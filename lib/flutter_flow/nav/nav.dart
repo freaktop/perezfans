@@ -3,12 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/auth/base_auth_user_provider.dart';
+import '../../auth/firebase_auth/auth_util.dart';
 
-import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
+import '../flutter_flow_theme.dart';
+import '../flutter_flow_util.dart';
 
-import '/index.dart';
+import '../../backend/backend.dart';
+import '../../index.dart';
 
 export 'package:go_router/go_router.dart';
 export 'serialization_util.dart';
@@ -27,6 +28,22 @@ class AppStateNotifier extends ChangeNotifier {
   BaseAuthUser? user;
   bool showSplashImage = true;
   String? _redirectLocation;
+
+  /// Tracks whether the user has completed age verification.
+  bool? _ageVerified;
+  bool? get ageVerified => _ageVerified;
+  set ageVerified(bool? value) {
+    _ageVerified = value;
+    notifyListeners();
+  }
+
+  /// Tracks whether the current user is suspended/banned.
+  bool _suspended = false;
+  bool get suspended => _suspended;
+  set suspended(bool value) {
+    _suspended = value;
+    notifyListeners();
+  }
 
   /// Determines whether the app will refresh and build again when a sign
   /// in or sign out happens. This is useful when the app is launched or
@@ -164,7 +181,251 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                   collectionNamePath: ['videos'],
                 ),
               ),
-            )
+            ),
+            FFRoute(
+              name: ChatListWidget.routeName,
+              path: ChatListWidget.routePath,
+              builder: (context, params) => ChatListWidget(),
+            ),
+            FFRoute(
+              name: ChatWidget.routeName,
+              path: ChatWidget.routePath,
+              builder: (context, params) => ChatWidget(
+                peerRef: params.getParam(
+                  'peerRef',
+                  ParamType.DocumentReference,
+                  isList: false,
+                  collectionNamePath: ['users'],
+                ),
+              ),
+            ),
+            FFRoute(
+              name: LiveWidget.routeName,
+              path: LiveWidget.routePath,
+              builder: (context, params) => LiveWidget(),
+            ),
+            FFRoute(
+              name: LiveRoomWidget.routeName,
+              path: LiveRoomWidget.routePath,
+              builder: (context, params) => LiveRoomWidget(
+                streamRef: params.getParam(
+                  'streamRef',
+                  ParamType.DocumentReference,
+                  isList: false,
+                  collectionNamePath: ['live_streams'],
+                ),
+                streamId: params.getParam(
+                  'streamId',
+                  ParamType.String,
+                  isList: false,
+                ),
+                asHost: params.getParam(
+                  'asHost',
+                  ParamType.bool,
+                  isList: false,
+                ),
+              ),
+            ),
+            FFRoute(
+              name: PerezFansLiveStream.routeName,
+              path: PerezFansLiveStream.routePath,
+              builder: (context, params) => PerezFansLiveStream(),
+            ),
+            FFRoute(
+              name: PerezFansLiveWeb.routeName,
+              path: PerezFansLiveWeb.routePath,
+              builder: (context, params) => PerezFansLiveWeb(),
+            ),
+            FFRoute(
+              name: NotificationPreferencesWidget.routeName,
+              path: NotificationPreferencesWidget.routePath,
+              builder: (context, params) => NotificationPreferencesWidget(),
+            ),
+            FFRoute(
+              name: ReportWidget.routeName,
+              path: ReportWidget.routePath,
+              builder: (context, params) => ReportWidget(
+                reportedUser: params.getParam(
+                  'reportedUser',
+                  ParamType.DocumentReference,
+                  isList: false,
+                  collectionNamePath: ['users'],
+                ),
+              ),
+            ),
+            FFRoute(
+              name: AnalyticsWidget.routeName,
+              path: AnalyticsWidget.routePath,
+              builder: (context, params) => AnalyticsWidget(),
+            ),
+            FFRoute(
+              name: CreatorHubWidget.routeName,
+              path: CreatorHubWidget.routePath,
+              builder: (context, params) => CreatorHubWidget(),
+            ),
+            FFRoute(
+              name: SearchWidget.routeName,
+              path: SearchWidget.routePath,
+              builder: (context, params) => SearchWidget(),
+            ),
+            FFRoute(
+              name: TrendingWidget.routeName,
+              path: TrendingWidget.routePath,
+              builder: (context, params) => TrendingWidget(),
+            ),
+            FFRoute(
+              name: ExploreWidget.routeName,
+              path: ExploreWidget.routePath,
+              builder: (context, params) => ExploreWidget(),
+            ),
+            FFRoute(
+              name: ScheduleStreamWidget.routeName,
+              path: ScheduleStreamWidget.routePath,
+              builder: (context, params) => ScheduleStreamWidget(),
+            ),
+            FFRoute(
+              name: UpcomingStreamsWidget.routeName,
+              path: UpcomingStreamsWidget.routePath,
+              builder: (context, params) => UpcomingStreamsWidget(),
+            ),
+            FFRoute(
+              name: SubscriptionSettingsWidget.routeName,
+              path: SubscriptionSettingsWidget.routePath,
+              builder: (context, params) => SubscriptionSettingsWidget(),
+            ),
+            FFRoute(
+              name: SubscriptionsListWidget.routeName,
+              path: SubscriptionsListWidget.routePath,
+              builder: (context, params) => SubscriptionsListWidget(),
+            ),
+            FFRoute(
+              name: SubscribersListWidget.routeName,
+              path: SubscribersListWidget.routePath,
+              builder: (context, params) => SubscribersListWidget(),
+            ),
+            FFRoute(
+              name: TipWidget.routeName,
+              path: TipWidget.routePath,
+              builder: (context, params) => TipWidget(
+                creatorRef: params.getParam(
+                  'creatorRef',
+                  ParamType.DocumentReference,
+                  isList: false,
+                  collectionNamePath: ['users'],
+                ),
+              ),
+            ),
+            FFRoute(
+              name: SubscribeToCreatorWidget.routeName,
+              path: SubscribeToCreatorWidget.routePath,
+              builder: (context, params) => SubscribeToCreatorWidget(
+                creatorRef: params.getParam(
+                  'creatorRef',
+                  ParamType.DocumentReference,
+                  isList: false,
+                  collectionNamePath: ['users'],
+                ),
+              ),
+            ),
+            FFRoute(
+              name: AgeVerificationWidget.routeName,
+              path: AgeVerificationWidget.routePath,
+              builder: (context, params) => AgeVerificationWidget(),
+            ),
+            FFRoute(
+              name: VaultWidget.routeName,
+              path: VaultWidget.routePath,
+              builder: (context, params) => VaultWidget(),
+            ),
+            FFRoute(
+              name: NewVaultRequestWidget.routeName,
+              path: NewVaultRequestWidget.routePath,
+              builder: (context, params) => NewVaultRequestWidget(
+                creatorRef: params.getParam(
+                  'creatorRef',
+                  ParamType.DocumentReference,
+                  isList: false,
+                  collectionNamePath: ['users'],
+                ),
+              ),
+            ),
+            FFRoute(
+              name: LiveGridWidget.routeName,
+              path: LiveGridWidget.routePath,
+              builder: (context, params) => LiveGridWidget(),
+            ),
+            FFRoute(
+              name: AppTutorialWidget.routeName,
+              path: AppTutorialWidget.routePath,
+              builder: (context, params) => AppTutorialWidget(),
+            ),
+            FFRoute(
+              name: WalletWidget.routeName,
+              path: WalletWidget.routePath,
+              builder: (context, params) => WalletWidget(),
+            ),
+            FFRoute(
+              name: AdminPanelWidget.routeName,
+              path: AdminPanelWidget.routePath,
+              builder: (context, params) => AdminPanelWidget(),
+            ),
+            FFRoute(
+              name: AffiliateWidget.routeName,
+              path: AffiliateWidget.routePath,
+              builder: (context, params) => AffiliateWidget(),
+            ),
+            FFRoute(
+              name: TermsOfServiceWidget.routeName,
+              path: TermsOfServiceWidget.routePath,
+              builder: (context, params) => TermsOfServiceWidget(),
+            ),
+            FFRoute(
+              name: PrivacyPolicyWidget.routeName,
+              path: PrivacyPolicyWidget.routePath,
+              builder: (context, params) => PrivacyPolicyWidget(),
+            ),
+            FFRoute(
+              name: DeleteAccountWidget.routeName,
+              path: DeleteAccountWidget.routePath,
+              builder: (context, params) => DeleteAccountWidget(),
+            ),
+            FFRoute(
+              name: BlockedUsersWidget.routeName,
+              path: BlockedUsersWidget.routePath,
+              builder: (context, params) => BlockedUsersWidget(),
+            ),
+            FFRoute(
+              name: BannedWidget.routeName,
+              path: BannedWidget.routePath,
+              builder: (context, params) => BannedWidget(),
+            ),
+            FFRoute(
+              name: PayoutHistoryWidget.routeName,
+              path: PayoutHistoryWidget.routePath,
+              builder: (context, params) => PayoutHistoryWidget(),
+            ),
+            FFRoute(
+              name: ActivityFeedWidget.routeName,
+              path: ActivityFeedWidget.routePath,
+              builder: (context, params) => ActivityFeedWidget(),
+            ),
+            FFRoute(
+              name: GiftShopWidget.routeName,
+              path: GiftShopWidget.routePath,
+              builder: (context, params) => GiftShopWidget(),
+            ),
+            FFRoute(
+              name: SendGiftWidget.routeName,
+              path: SendGiftWidget.routePath,
+              builder: (context, params) => SendGiftWidget(
+                recipientRef: params.getParam(
+                  'recipientRef',
+                  ParamType.DocumentReference,
+                  isList: false,
+                  collectionNamePath: ['users'],
+                ),
+              ),
+            ),
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ),
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
@@ -339,6 +600,13 @@ class FFRoute {
             appStateNotifier.setRedirectLocationIfUnset(state.uri.toString());
             return '/welcome';
           }
+
+          if (appStateNotifier.loggedIn && appStateNotifier.suspended) {
+            if (state.uri.toString() != '/banned') {
+              return '/banned';
+            }
+          }
+
           return null;
         },
         pageBuilder: (context, state) {

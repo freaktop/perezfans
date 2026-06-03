@@ -22,7 +22,7 @@
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="FlutterTok - TikTok Clone Template">
+  <meta name="apple-mobile-web-app-title" content="PerezFans">
 
   
 
@@ -30,18 +30,19 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
 
   <!-- Open Graph & SEO tags -->
-  <meta property="og:title" content="FlutterTok - TikTok Clone Template" />
-  <meta property="og:description" content="Built with FlutterFlow." />
-  <meta property="og:image" content="https://storage.googleapis.com/flutterflow-prod-hosting/og_splash_gradient.png" /> 
-  <meta name="twitter:title" content="FlutterTok - TikTok Clone Template" />
-  <meta name="twitter:description" content="Built with FlutterFlow." />
-  <meta name="twitter:image" content="https://storage.googleapis.com/flutterflow-prod-hosting/og_splash_gradient.png" />
+  <meta property="og:title" content="PerezFans" />
+  <meta property="og:description" content="PEREZFANS — Where Creators Connect, Collaborate, and Cash Out." />
+  <meta property="og:image" content="https://perezfans.web.app/favicon.png" /> 
+  <meta name="twitter:title" content="PerezFans" />
+  <meta name="twitter:description" content="PEREZFANS — Where Creators Connect, Collaborate, and Cash Out." />
+  <meta name="twitter:image" content="https://perezfans.web.app/favicon.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <title> FlutterTok - TikTok Clone Template </title>
-  <meta name="description" content="Built with FlutterFlow." />
+  <title> PerezFans </title>
+  <meta name="description" content="PEREZFANS — Where Creators Connect, Collaborate, and Cash Out." />
     
 
   <!-- Status Bar color in Safari browser (iOS) and PWA -->
@@ -58,6 +59,14 @@
   
   
   <script>
+    // Unregister any old service workers to prevent cache issues
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
     {{flutter_bootstrap_js}}
   </script>
 </body>

@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/comments/comments_widget.dart';
+import '/core_pages/home/video_preloader.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_timer.dart';
@@ -33,6 +35,7 @@ class SingleVideoWidget extends StatefulWidget {
 
 class _SingleVideoWidgetState extends State<SingleVideoWidget> {
   late SingleVideoModel _model;
+  bool _viewCounted = false;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -41,12 +44,22 @@ class _SingleVideoWidgetState extends State<SingleVideoWidget> {
     super.initState();
     _model = createModel(context, () => SingleVideoModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _incrementView();
+      safeSetState(() {});
+    });
+  }
+
+  void _incrementView() {
+    if (widget.videoRef == null || _viewCounted) return;
+    _viewCounted = true;
+    widget.videoRef!.update({'views': FieldValue.increment(1)});
   }
 
   @override
   void dispose() {
     _model.dispose();
+    VideoPreloader().clear();
 
     super.dispose();
   }
@@ -142,24 +155,10 @@ class _SingleVideoWidgetState extends State<SingleVideoWidget> {
 
                         return Stack(
                           children: [
-                            Container(
-                              width: double.infinity,
-                              height: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                              ),
-                              child: FlutterFlowVideoPlayer(
-                                path: containerVideosRecord.videoUrl,
-                                videoType: VideoType.network,
-                                width: double.infinity,
-                                height: double.infinity,
-                                autoPlay: true,
-                                looping: true,
-                                showControls: false,
-                                allowFullScreen: false,
-                                allowPlaybackSpeedMenu: false,
-                                lazyLoad: false,
-                              ),
+                            _buildVideoContent(
+                              context,
+                              containerVideosRecord,
+                              stackUsersRecord,
                             ),
                             Column(
                               mainAxisSize: MainAxisSize.max,
@@ -417,7 +416,7 @@ class _SingleVideoWidgetState extends State<SingleVideoWidget> {
                                                         valueOrDefault<String>(
                                                           stackUsersRecord
                                                               .photoUrl,
-                                                          'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/flutter-tok-tik-tok-clone-template-b4cltx/assets/mtz39cbrrz9b/default-avatar-2.png',
+                                                          'https://ui-avatars.com/api/?name=U&background=6C63FF&color=fff&size=128',
                                                         ),
                                                         fit: BoxFit.cover,
                                                       ),
@@ -480,7 +479,7 @@ class _SingleVideoWidgetState extends State<SingleVideoWidget> {
                                                         valueOrDefault<String>(
                                                           stackUsersRecord
                                                               .photoUrl,
-                                                          'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/flutter-tok-tik-tok-clone-template-b4cltx/assets/mtz39cbrrz9b/default-avatar-2.png',
+                                                          'https://ui-avatars.com/api/?name=U&background=6C63FF&color=fff&size=128',
                                                         ),
                                                         fit: BoxFit.cover,
                                                       ),
@@ -1066,6 +1065,112 @@ class _SingleVideoWidgetState extends State<SingleVideoWidget> {
           ],
         ),
       ),
+    );
+  }
+
+  Future<bool> _checkSubscriptionStatus(
+      DocumentReference creatorRef) async {
+    if (currentUserReference == null) return false;
+    final snapshot = await FirebaseFirestore.instance
+        .collection('subscriptions')
+        .where('subscriber', isEqualTo: currentUserReference)
+        .where('creator', isEqualTo: creatorRef)
+        .where('active', isEqualTo: true)
+        .limit(1)
+        .get();
+    return snapshot.docs.isNotEmpty;
+  }
+
+  Future<bool> _checkPurchaseStatus(String contentId) async {
+    if (currentUserReference == null) return false;
+    final snapshot = await FirebaseFirestore.instance
+        .collection('content_purchases')
+        .where('user', isEqualTo: currentUserReference)
+        .where('content_id', isEqualTo: contentId)
+        .limit(1)
+        .get();
+    return snapshot.docs.isNotEmpty;
+  }
+
+  Widget _buildVideoContent(
+    BuildContext context,
+    VideosRecord videoRecord,
+    UsersRecord creatorRecord,
+  ) {
+    final isOwnContent = currentUserReference == videoRecord.videoUser;
+    final needsAccessCheck = videoRecord.isExclusive ||
+        (videoRecord.price ?? 0) > 0;
+
+    if (!needsAccessCheck || isOwnContent) {
+      return Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(color: Colors.black),
+        child: FlutterFlowVideoPlayer(
+          path: videoRecord.videoUrl,
+          videoType: VideoType.network,
+          width: double.infinity,
+          height: double.infinity,
+          autoPlay: true,
+          looping: true,
+          showControls: false,
+          allowFullScreen: false,
+          allowPlaybackSpeedMenu: false,
+          lazyLoad: false,
+        ),
+      );
+    }
+
+    return FutureBuilder<bool>(
+      future: Future.wait([
+        _checkSubscriptionStatus(videoRecord.videoUser!),
+        _checkPurchaseStatus(videoRecord.reference.id),
+      ]).then((results) => results[0] || results[1]),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (snapshot.data!) {
+          return Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(color: Colors.black),
+            child: FlutterFlowVideoPlayer(
+              path: videoRecord.videoUrl,
+              videoType: VideoType.network,
+              width: double.infinity,
+              height: double.infinity,
+              autoPlay: true,
+              looping: true,
+              showControls: false,
+              allowFullScreen: false,
+              allowPlaybackSpeedMenu: false,
+              lazyLoad: false,
+            ),
+          );
+        }
+
+        return PayPerViewOverlay(
+          price: videoRecord.price,
+          isSubscribed: false,
+          onSubscribe: () {
+            context.pushNamed(SubscriptionsListWidget.routeName);
+          },
+          onPay: (videoRecord.price ?? 0) > 0
+              ? () {
+                  context.pushNamed(TipWidget.routeName, queryParameters: {
+                    'creatorRef': serializeParam(
+                      videoRecord.videoUser,
+                      ParamType.DocumentReference,
+                    ),
+                  }.withoutNulls);
+                }
+              : null,
+        );
+      },
     );
   }
 }

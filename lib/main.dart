@@ -6,16 +6,15 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'auth/firebase_auth/firebase_user_provider.dart';
 import 'auth/firebase_auth/auth_util.dart';
-import 'auth/base_auth_user_provider.dart';
 
 import 'backend/firebase/firebase_config.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
+import 'backend/firebase/app_check.dart';
+import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
-import 'flutter_flow/nav/nav.dart';
-import 'app_state.dart';
+import 'i18n/translation_service.dart';
+import 'backend/firebase/fcm_service.dart';
 
-// Add alias for easier reference
-Stream<BaseAuthUser> perezFansFirebaseUserStream() => flutterTokTikTokCloneTemplateFirebaseUserStream();
+// perezFansFirebaseUserStream defined in firebase_user_provider.dart
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,16 +22,24 @@ void main() async {
   usePathUrlStrategy();
 
   await initFirebase();
+  await initAppCheck();
 
   await FlutterFlowTheme.initialize();
+  await TranslationService().load();
+  await FcmService().initialize();
 
   final appState = FFAppState(); // Initialize FFAppState
   await appState.initializePersistedState();
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => appState,
-    child: MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => appState),
+        ChangeNotifierProvider(create: (context) => TranslationService()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -80,7 +87,7 @@ class _MyAppState extends State<MyApp> {
 
     _appStateNotifier = AppStateNotifier.instance;
     _router = createRouter(_appStateNotifier);
-    userStream = flutterTokTikTokCloneTemplateFirebaseUserStream()
+    userStream = perezFansFirebaseUserStream()
       ..listen((user) {
         _appStateNotifier.update(user);
       });
@@ -107,14 +114,14 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'FlutterTok - TikTok Clone Template',
+      title: 'PerezFans',
       scrollBehavior: MyAppScrollBehavior(),
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [Locale('en', '')],
+      supportedLocales: const [Locale('en', ''), Locale('es', '')],
       theme: ThemeData(
         brightness: Brightness.light,
         useMaterial3: false,

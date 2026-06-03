@@ -1,37 +1,104 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ========== CORE USER/VISIBILITY ==========
     match /users/{document} {
       allow create: if true;
       allow read: if true;
-      allow write: if request.auth != null;
-      allow delete: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == document;
+      allow delete: if request.auth != null && request.auth.uid == document;
     }
 
-    match /videos/{document} {
-      allow create: if true;
+    match /usernames/{document} {
+      allow create: if request.auth != null;
       allow read: if true;
-      allow write: if request.auth != null;
-      allow delete: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == document;
+      allow delete: if false;
+    }
+
+    // ========== VIDEOS & COMMENTS ==========
+    match /videos/{document} {
+      allow create: if request.auth != null;
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == resource.data.video_user;
+      allow delete: if request.auth != null && request.auth.uid == resource.data.video_user;
     }
 
     match /videos/{parent}/comments/{document} {
-      allow create: if true;
+      allow create: if request.auth != null;
       allow read: if true;
-      allow write: if request.auth != null;
-      allow delete: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == get(/databases/$(database)/documents/videos/$(parent)).data.video_user;
+      allow delete: if request.auth != null && (request.auth.uid == resource.data.user || request.auth.uid == get(/databases/$(database)/documents/videos/$(parent)).data.video_user);
     }
 
     match /{path=**}/comments/{document} {
       allow read: if true;
     }
 
+    // ========== SUBSCRIPTIONS ==========
+    match /subscriptions/{document} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == resource.data.subscriber;
+      allow delete: if request.auth != null && request.auth.uid == resource.data.subscriber;
+    }
 
-    match /usernames/{document} {
-      allow create: if true;
+    match /creator_settings/{document} {
       allow read: if true;
+      allow create: if request.auth != null && request.auth.uid == document;
+      allow write: if request.auth != null && request.auth.uid == document;
+    }
+
+    // ========== TIPS ==========
+    match /tips/{document} {
+      allow read: if true;
+      allow create: if false;  // Created by webhook only
+      allow write: if false;
+    }
+
+    // ========== VAULT (custom content requests) ==========
+    match /vault_requests/{document} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
       allow write: if request.auth != null;
-      allow delete: if false;
+    }
+
+    // ========== REPORTS & BLOCKS ==========
+    match /reports/{document} {
+      allow create: if request.auth != null;
+      allow read: if false;  // Admin only
+    }
+
+    match /blocks/{document} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+    }
+
+    // ========== NOTIFICATION SETTINGS ==========
+    match /notification_settings/{document} {
+      allow read: if request.auth != null && request.auth.uid == document;
+      allow write: if request.auth != null && request.auth.uid == document;
+    }
+
+    // ========== CONTENT PURCHASES ==========
+    match /content_purchases/{document} {
+      allow read: if request.auth != null;
+      allow create: if false;  // Created by webhook only
+    }
+
+    // ========== SCHEDULED STREAMS ==========
+    match /scheduled_streams/{document} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+
+    // ========== HASHTAGS ==========
+    match /video_hashtags/{document} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow write: if request.auth != null;
     }
   }
 }

@@ -7,6 +7,7 @@ import '/backend/schema/util/schema_util.dart';
 
 import 'index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UsersRecord extends FirestoreRecord {
   UsersRecord._(
@@ -76,6 +77,36 @@ class UsersRecord extends FirestoreRecord {
   int get totalLikes => _totalLikes ?? 0;
   bool hasTotalLikes() => _totalLikes != null;
 
+  // "role" field.
+  String? _role;
+  String get role => _role ?? '';
+  bool hasRole() => _role != null;
+
+  // "referral_code" field.
+  String? _referralCode;
+  String get referralCode => _referralCode ?? '';
+  bool hasReferralCode() => _referralCode != null;
+
+  // "referred_by" field.
+  DocumentReference? _referredBy;
+  DocumentReference? get referredBy => _referredBy;
+  bool hasReferredBy() => _referredBy != null;
+
+  // "fcm_tokens" field.
+  List<String>? _fcmTokens;
+  List<String> get fcmTokens => _fcmTokens ?? const [];
+  bool hasFcmTokens() => _fcmTokens != null;
+
+  // "suspended" field.
+  bool? _suspended;
+  bool get suspended => _suspended ?? false;
+  bool hasSuspended() => _suspended != null;
+
+  // "suspension_reason" field.
+  String? _suspensionReason;
+  String get suspensionReason => _suspensionReason ?? '';
+  bool hasSuspensionReason() => _suspensionReason != null;
+
   void _initializeFields() {
     _email = snapshotData['email'] as String?;
     _displayName = snapshotData['display_name'] as String?;
@@ -89,6 +120,12 @@ class UsersRecord extends FirestoreRecord {
     _userBio = snapshotData['user_bio'] as String?;
     _followers = getDataList(snapshotData['followers']);
     _totalLikes = castToType<int>(snapshotData['total_likes']);
+    _role = snapshotData['role'] as String?;
+    _referralCode = snapshotData['referral_code'] as String?;
+    _referredBy = snapshotData['referred_by'] as DocumentReference?;
+    _fcmTokens = castToType<List<String>>(snapshotData['fcm_tokens']);
+    _suspended = snapshotData['suspended'] as bool?;
+    _suspensionReason = snapshotData['suspension_reason'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -134,6 +171,12 @@ Map<String, dynamic> createUsersRecordData({
   String? username,
   String? userBio,
   int? totalLikes,
+  String? role,
+  String? referralCode,
+  DocumentReference? referredBy,
+  List<String>? fcmTokens,
+  bool? suspended,
+  String? suspensionReason,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -146,6 +189,12 @@ Map<String, dynamic> createUsersRecordData({
       'username': username,
       'user_bio': userBio,
       'total_likes': totalLikes,
+      'role': role,
+      'referral_code': referralCode,
+      'referred_by': referredBy,
+      'fcm_tokens': fcmTokens,
+      'suspended': suspended,
+      'suspension_reason': suspensionReason,
     }.withoutNulls,
   );
 
@@ -168,8 +217,14 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         listEquality.equals(e1?.following, e2?.following) &&
         e1?.username == e2?.username &&
         e1?.userBio == e2?.userBio &&
-        listEquality.equals(e1?.followers, e2?.followers) &&
-        e1?.totalLikes == e2?.totalLikes;
+        listEquality.equals(        e1?.followers, e2?.followers) &&
+        e1?.totalLikes == e2?.totalLikes &&
+        e1?.role == e2?.role &&
+        e1?.referralCode == e2?.referralCode &&
+        e1?.referredBy == e2?.referredBy &&
+        const ListEquality().equals(e1?.fcmTokens, e2?.fcmTokens) &&
+        e1?.suspended == e2?.suspended &&
+        e1?.suspensionReason == e2?.suspensionReason;
   }
 
   @override
@@ -185,7 +240,13 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         e?.username,
         e?.userBio,
         e?.followers,
-        e?.totalLikes
+        e?.totalLikes,
+        e?.role,
+        e?.referralCode,
+        e?.referredBy,
+        e?.fcmTokens,
+        e?.suspended,
+        e?.suspensionReason,
       ]);
 
   @override

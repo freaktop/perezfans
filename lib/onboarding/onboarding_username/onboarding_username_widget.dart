@@ -313,6 +313,14 @@ class _OnboardingUsernameWidgetState extends State<OnboardingUsernameWidget> {
                                   child: StreamBuilder<List<UsernamesRecord>>(
                                     stream: queryUsernamesRecord(
                                       singleRecord: true,
+                                      queryBuilder: (q) => q.where(
+                                        'usernames',
+                                        arrayContains:
+                                            _model.usernameInputTextController
+                                                .text
+                                                .trim()
+                                                .toLowerCase(),
+                                      ),
                                     ),
                                     builder: (context, snapshot) {
                                       // Customize what your widget looks like when it's loading.

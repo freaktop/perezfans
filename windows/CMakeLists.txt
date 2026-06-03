@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
-project(flutter_tok_tik_tok_clone_template LANGUAGES CXX)
+project(perezfans LANGUAGES CXX)
 
-set(BINARY_NAME "flutter_tok_tik_tok_clone_template")
+set(BINARY_NAME "perezfans")
 
 cmake_policy(SET CMP0063 NEW)
 

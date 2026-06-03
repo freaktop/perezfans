@@ -35,6 +35,7 @@ class _NewPostWidgetState extends State<NewPostWidget> {
 
     _model.descriptionInputTextController ??= TextEditingController();
     _model.descriptionInputFocusNode ??= FocusNode();
+    _model.soundTextController ??= TextEditingController();
 
     _model.switchAllowCommentsValue = true;
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
@@ -228,6 +229,57 @@ class _NewPostWidgetState extends State<NewPostWidget> {
                     ),
                   ),
                   Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(16.0, 8.0, 16.0, 6.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Icon(
+                          Icons.music_note,
+                          color: FlutterFlowTheme.of(context).secondaryText,
+                          size: 24.0,
+                        ),
+                        const SizedBox(width: 15.0),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _model.soundTextController,
+                            decoration: InputDecoration(
+                              hintText: 'Add sound...',
+                              hintStyle: FlutterFlowTheme.of(context)
+                                  .bodySmall,
+                              border: InputBorder.none,
+                              isDense: true,
+                            ),
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium,
+                          ),
+                        ),
+                        PopupMenuButton<String>(
+                          icon: Icon(
+                            Icons.library_music,
+                            color: FlutterFlowTheme.of(context).primary,
+                            size: 24.0,
+                          ),
+                          onSelected: (value) {
+                            _model.soundTextController?.text = value;
+                          },
+                          itemBuilder: (context) => [
+                            'Original Sound',
+                            'Pop Hits',
+                            'Hip Hop',
+                            'Electronic',
+                            'Lo-Fi Beats',
+                            'Jazz',
+                            'Rock',
+                            'Ambient',
+                          ].map((s) => PopupMenuItem(
+                                value: s,
+                                child: Text(s),
+                              )).toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
                     padding:
                         EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 6.0),
                     child: Row(
@@ -357,6 +409,8 @@ class _NewPostWidgetState extends State<NewPostWidget> {
                                       videoAllowComments:
                                           _model.switchAllowCommentsValue,
                                       videoPostedTime: getCurrentTimestamp,
+                                      videoSound: _model
+                                          .soundTextController?.text,
                                     ));
                                 FFAppState().newVideo = '';
                                 safeSetState(() {});

@@ -6,7 +6,6 @@ final _googleSignIn = GoogleSignIn(scopes: ['profile', 'email']);
 
 Future<UserCredential?> googleSignInFunc() async {
   if (kIsWeb) {
-    // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithPopup(GoogleAuthProvider());
   }
 

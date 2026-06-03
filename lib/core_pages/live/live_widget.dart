@@ -290,6 +290,10 @@ class _LiveWidgetState extends State<LiveWidget> {
                 onPressed: () => context.pushNamed(PerezFansLiveWeb.routeName),
                 child: const Text('Agora web layout (640×480)'),
               ),
+              TextButton(
+                onPressed: () => context.pushNamed(LiveGridWidget.routeName),
+                child: const Text('Recorded Lives'),
+              ),
               if (_streamId != null) ...[
                 Text('Stream ID: $_streamId'),
                 Text('Channel: ${_channelName ?? "-"}'),

@@ -5,8 +5,8 @@ import '../base_auth_user_provider.dart';
 
 export '../base_auth_user_provider.dart';
 
-class FlutterTokTikTokCloneTemplateFirebaseUser extends BaseAuthUser {
-  FlutterTokTikTokCloneTemplateFirebaseUser(this.user);
+class PerezFansFirebaseUser extends BaseAuthUser {
+  PerezFansFirebaseUser(this.user);
   User? user;
   bool get loggedIn => user != null;
 
@@ -25,7 +25,7 @@ class FlutterTokTikTokCloneTemplateFirebaseUser extends BaseAuthUser {
   @override
   Future? updateEmail(String email) async {
     try {
-      await user?.updateEmail(email);
+      await user?.verifyBeforeUpdateEmail(email);
     } catch (_) {
       await user?.verifyBeforeUpdateEmail(email);
     }
@@ -59,10 +59,10 @@ class FlutterTokTikTokCloneTemplateFirebaseUser extends BaseAuthUser {
   static BaseAuthUser fromUserCredential(UserCredential userCredential) =>
       fromFirebaseUser(userCredential.user);
   static BaseAuthUser fromFirebaseUser(User? user) =>
-      FlutterTokTikTokCloneTemplateFirebaseUser(user);
+      PerezFansFirebaseUser(user);
 }
 
-Stream<BaseAuthUser> flutterTokTikTokCloneTemplateFirebaseUserStream() =>
+Stream<BaseAuthUser> perezFansFirebaseUserStream() =>
     FirebaseAuth.instance
         .authStateChanges()
         .debounce((user) => user == null && !loggedIn
@@ -70,7 +70,7 @@ Stream<BaseAuthUser> flutterTokTikTokCloneTemplateFirebaseUserStream() =>
             : Stream.value(user))
         .map<BaseAuthUser>(
       (user) {
-        currentUser = FlutterTokTikTokCloneTemplateFirebaseUser(user);
+        currentUser = PerezFansFirebaseUser(user);
         return currentUser!;
       },
     );

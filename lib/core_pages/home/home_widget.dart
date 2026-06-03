@@ -8,6 +8,7 @@ import '/flutter_flow/flutter_flow_timer.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_video_player.dart';
 import '/index.dart';
+import '/core_pages/home/video_preloader.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -93,7 +94,8 @@ class _HomeWidgetState extends State<HomeWidget> {
               child: StreamBuilder<List<VideosRecord>>(
                 stream: queryVideosRecord(
                   queryBuilder: (videosRecord) => videosRecord
-                      .orderBy('video_posted_time', descending: true),
+                      .orderBy('video_posted_time', descending: true)
+                      .limit(50),
                 ),
                 builder: (context, snapshot) {
                   // Customize what your widget looks like when it's loading.
@@ -111,6 +113,49 @@ class _HomeWidgetState extends State<HomeWidget> {
                     );
                   }
                   List<VideosRecord> pageViewVideosRecordList = snapshot.data!;
+                  if (pageViewVideosRecordList.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.smart_display,
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryText,
+                            size: 64.0,
+                          ),
+                          SizedBox(height: 16.0),
+                          Text(
+                            'No videos yet',
+                            style: FlutterFlowTheme.of(context)
+                                .titleLarge
+                                .override(
+                                  font: GoogleFonts.poppins(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                  ),
+                                ),
+                          ),
+                          SizedBox(height: 8.0),
+                          Text(
+                            'Upload the first video!',
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  font: GoogleFonts.poppins(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                  ),
+                                ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  VideoPreloader().preloadNext(
+                    pageViewVideosRecordList.map((v) => v.videoUrl).toList(),
+                    count: 2,
+                  );
 
                   return Container(
                     width: double.infinity,
@@ -404,7 +449,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                                 String>(
                                                               stackUsersRecord
                                                                   .photoUrl,
-                                                              'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/flutter-tok-tik-tok-clone-template-b4cltx/assets/mtz39cbrrz9b/default-avatar-2.png',
+                                                              'https://ui-avatars.com/api/?name=U&background=6C63FF&color=fff&size=128',
                                                             ),
                                                             fit: BoxFit.cover,
                                                           ),
@@ -477,7 +522,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                                 String>(
                                                               stackUsersRecord
                                                                   .photoUrl,
-                                                              'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/flutter-tok-tik-tok-clone-template-b4cltx/assets/mtz39cbrrz9b/default-avatar-2.png',
+                                                              'https://ui-avatars.com/api/?name=U&background=6C63FF&color=fff&size=128',
                                                             ),
                                                             fit: BoxFit.cover,
                                                           ),

@@ -1,31 +1,30 @@
 {
-  "name": "PerezFans",
+  "name": "PerezFans — Catch It Live",
   "short_name": "PerezFans",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0D0D0F",
   "theme_color": "#C41E4A",
-  "description": "PEREZFANS — Where Creators Connect, Collaborate, and Cash Out.",
+  "description": "Where Creators Connect, Collaborate, and Cash Out. Live streaming, tips, subscriptions, and exclusive content.",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
+  "categories": ["entertainment", "social", "live_streaming"],
+  "lang": "en",
+  "dir": "auto",
+  "display_override": ["standalone", "minimal-ui"],
+  "screenshots": [],
   "icons": [
     {
       "src": "favicon.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
-      "src": "favicon.png?v=2",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "favicon.png?v=2",
+      "src": "favicon.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ]
 }

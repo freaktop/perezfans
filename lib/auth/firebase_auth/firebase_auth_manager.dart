@@ -308,19 +308,25 @@ class FirebaseAuthManager extends AuthManager
       }
       return userCredential == null
           ? null
-          : FlutterTokTikTokCloneTemplateFirebaseUser.fromUserCredential(
+          : PerezFansFirebaseUser.fromUserCredential(
               userCredential);
     } on FirebaseAuthException catch (e) {
       final errorMsg = switch (e.code) {
         'email-already-in-use' =>
           'Error: The email is already in use by a different account',
-        'INVALID_LOGIN_CREDENTIALS' =>
+        'INVALID_LOGIN_CREDENTIALS' || 'invalid-credential' =>
           'Error: The supplied auth credential is incorrect, malformed or has expired',
-        _ => 'Error: ${e.message!}',
+        _ => 'Error: ${e.message ?? e.code}',
       };
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(errorMsg)),
+      );
+      return null;
+    } on Exception catch (e) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
       );
       return null;
     }
