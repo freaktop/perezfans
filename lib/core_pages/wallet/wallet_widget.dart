@@ -146,7 +146,8 @@ class _WalletWidgetState extends State<WalletWidget> {
     required double totalTips,
     required int subscriberCount,
   }) {
-    final total = totalTips;
+    final estimatedSubRevenue = subscriberCount * 9.99;
+    final total = totalTips + estimatedSubRevenue;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20.0),
@@ -193,7 +194,7 @@ class _WalletWidgetState extends State<WalletWidget> {
             width: double.infinity,
             child: TextButton.icon(
               onPressed: () {
-                context.pushNamed(EditProfileWidget.routeName);
+                context.pushNamed(PayoutHistoryWidget.routeName);
               },
               icon: const Icon(Icons.open_in_new, color: Colors.white, size: 18.0),
               label: Text(

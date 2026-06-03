@@ -67,8 +67,17 @@ class _HomeNavBarWidgetState extends State<HomeNavBarWidget> {
                     color: FlutterFlowTheme.of(context).primaryBtnText,
                     size: 30.0,
                   ),
-                  onPressed: () {
-                    print('Home');
+                  onPressed: () async {
+                    context.goNamed(
+                      HomeWidget.routeName,
+                      extra: <String, dynamic>{
+                        '__transition_info__': TransitionInfo(
+                          hasTransition: true,
+                          transitionType: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 0),
+                        ),
+                      },
+                    );
                   },
                 ),
                 FlutterFlowIconButton(

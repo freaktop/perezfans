@@ -416,12 +416,6 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   ),
                   _settingsItem(
                     context,
-                    icon: Icons.report,
-                    label: 'Report',
-                    onTap: () => context.pushNamed(ReportWidget.routeName),
-                  ),
-                  _settingsItem(
-                    context,
                     icon: Icons.palette,
                     label: 'Theme',
                     onTap: () => _showThemePicker(context),

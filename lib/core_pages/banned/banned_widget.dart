@@ -2,6 +2,7 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/index.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -107,7 +108,13 @@ class _BannedWidgetState extends State<BannedWidget> {
                     const SizedBox(height: 24.0),
                     TextButton.icon(
                       onPressed: () async {
+                        GoRouter.of(context).prepareAuthEvent();
                         await authManager.signOut();
+                        GoRouter.of(context).clearRedirectLocation();
+                        if (context.mounted) {
+                          context.goNamedAuth(
+                              WelcomeWidget.routeName, context.mounted);
+                        }
                       },
                       icon: const Icon(Icons.logout, size: 18.0),
                       label: const Text('Sign Out'),

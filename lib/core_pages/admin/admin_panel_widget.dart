@@ -310,11 +310,19 @@ class _AdminPanelWidgetState extends State<AdminPanelWidget>
   }
 
   Future<void> _dismissReport(ReportsRecord report) async {
-    await report.reference.update({'status': 'dismissed'});
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Report dismissed')),
-      );
+    try {
+      await report.reference.update({'status': 'dismissed'});
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Report dismissed')),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
     }
   }
 
@@ -458,17 +466,33 @@ class _AdminPanelWidgetState extends State<AdminPanelWidget>
   }
 
   Future<void> _banUser(UsersRecord user, {String? reason}) async {
-    await user.reference.update({
-      'suspended': true,
-      'suspension_reason': reason ?? 'Violation of terms of service',
-    });
+    try {
+      await user.reference.update({
+        'suspended': true,
+        'suspension_reason': reason ?? 'Violation of terms of service',
+      });
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error banning user: $e')),
+        );
+      }
+    }
   }
 
   Future<void> _unbanUser(UsersRecord user) async {
-    await user.reference.update({
-      'suspended': false,
-      'suspension_reason': FieldValue.delete(),
-    });
+    try {
+      await user.reference.update({
+        'suspended': false,
+        'suspension_reason': FieldValue.delete(),
+      });
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error unbanning user: $e')),
+        );
+      }
+    }
   }
 
   void _showUserActions(BuildContext context, UsersRecord user) {
@@ -502,15 +526,24 @@ class _AdminPanelWidgetState extends State<AdminPanelWidget>
                         color: FlutterFlowTheme.of(context).primary),
                     title: const Text('Make Admin'),
                     onTap: () async {
-                      await user.reference
-                          .update({'role': 'admin'});
-                      Navigator.pop(sheetContext);
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(
-                                  '@${user.username} is now an admin')),
-                        );
+                      try {
+                        await user.reference
+                            .update({'role': 'admin'});
+                        Navigator.pop(sheetContext);
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content: Text(
+                                    '@${user.username} is now an admin')),
+                          );
+                        }
+                      } catch (e) {
+                        Navigator.pop(sheetContext);
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Error: $e')),
+                          );
+                        }
                       }
                     },
                   )
@@ -521,15 +554,24 @@ class _AdminPanelWidgetState extends State<AdminPanelWidget>
                             .secondaryText),
                     title: const Text('Remove Admin'),
                     onTap: () async {
-                      await user.reference
-                          .update({'role': FieldValue.delete()});
-                      Navigator.pop(sheetContext);
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(
-                                  '@${user.username} admin access removed')),
-                        );
+                      try {
+                        await user.reference
+                            .update({'role': FieldValue.delete()});
+                        Navigator.pop(sheetContext);
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content: Text(
+                                    '@${user.username} admin access removed')),
+                          );
+                        }
+                      } catch (e) {
+                        Navigator.pop(sheetContext);
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Error: $e')),
+                          );
+                        }
                       }
                     },
                   ),
