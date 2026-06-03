@@ -3,23 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>136146624285-v91vjhaabkjf7e7066vemf9esvnsvbvo.apps.googleusercontent.com</string>
+	<string>547851710384-updkriqn9q041mrmk8il78s231srb9pi.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.136146624285-v91vjhaabkjf7e7066vemf9esvnsvbvo</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>136146624285-nqs5la7jpdgp92jcpcadk1e750ll0ik8.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.547851710384-updkriqn9q041mrmk8il78s231srb9pi</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBalgzix0MRm3CoarcdSiZjwT4B0iVOckY</string>
+	<string>AIzaSyC9YrfzmMuFW1UJS12Bo3U_DaekY9jfkXQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>136146624285</string>
+	<string>547851710384</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.flutterflow.fluttertok</string>
+	<string>com.perezcode.perezfans</string>
 	<key>PROJECT_ID</key>
-	<string>flutter-tok</string>
+	<string>perezfans</string>
 	<key>STORAGE_BUCKET</key>
-	<string>flutter-tok.appspot.com</string>
+	<string>perezfans.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:136146624285:ios:6cfc3f0c31e2ebf6940bf4</string>
+	<string>1:547851710384:ios:83b53c348f68f0baacb075</string>
 </dict>
 </plist>
