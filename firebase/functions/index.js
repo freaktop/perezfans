@@ -243,6 +243,134 @@ exports.createCoinPurchaseCheckout = functions.https.onCall(async (data, context
   }
 });
 
+// ============================================================
+// Agora Live Streaming Functions
+// ============================================================
+
+const {RtcTokenBuilder, RtcRole} = require('agora-access-token');
+
+/**
+ * Creates a new live stream document in Firestore and returns the channel name.
+ * Expects data: { title, isAdult }
+ */
+exports.startLiveStream = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError("unauthenticated", "You must be signed in.");
+  }
+
+  const { title, isAdult } = data;
+  const uid = context.auth.uid;
+  const channelName = `live_${uid}_${Date.now()}`;
+
+  try {
+    const db = admin.firestore();
+    const docRef = await db.collection("live_streams").add({
+      host_user: db.collection("users").doc(uid),
+      title: title || "Untitled Stream",
+      channel_name: channelName,
+      status: "live",
+      started_at: admin.firestore.FieldValue.serverTimestamp(),
+      is_adult: isAdult || false,
+      viewer_count: 0,
+    });
+
+    return { streamId: docRef.id, channelName };
+  } catch (err) {
+    console.error("startLiveStream failed:", err);
+    throw new functions.https.HttpsError("internal", err.message);
+  }
+});
+
+/**
+ * Ends a live stream and optionally saves a replay URL.
+ * Expects data: { streamId, replayUrl }
+ */
+exports.endLiveStream = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError("unauthenticated", "You must be signed in.");
+  }
+
+  const { streamId, replayUrl } = data;
+  if (!streamId) {
+    throw new functions.https.HttpsError("invalid-argument", "streamId is required.");
+  }
+
+  try {
+    const db = admin.firestore();
+    const update = {
+      status: "ended",
+      ended_at: admin.firestore.FieldValue.serverTimestamp(),
+    };
+    if (replayUrl) {
+      update.replay_url = replayUrl;
+    }
+    await db.collection("live_streams").doc(streamId).update(update);
+    return { success: true };
+  } catch (err) {
+    console.error("endLiveStream failed:", err);
+    throw new functions.https.HttpsError("internal", err.message);
+  }
+});
+
+/**
+ * Generates an Agora RTC token for a live stream channel.
+ * Expects data: { streamId }
+ * Requires agora.app_id and agora.app_certificate in functions config.
+ */
+exports.createAgoraRtcToken = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError("unauthenticated", "You must be signed in.");
+  }
+
+  const { streamId } = data;
+  if (!streamId) {
+    throw new functions.https.HttpsError("invalid-argument", "streamId is required.");
+  }
+
+  const appId = functions.config().agora?.app_id;
+  const appCertificate = functions.config().agora?.app_certificate;
+
+  if (!appId || !appCertificate) {
+    console.error("Agora app_id or app_certificate not configured.");
+    throw new functions.https.HttpsError(
+      "failed-precondition",
+      "Agora is not configured. Set agora.app_id and agora.app_certificate via firebase functions:config:set."
+    );
+  }
+
+  try {
+    const db = admin.firestore();
+    const streamDoc = await db.collection("live_streams").doc(streamId).get();
+    if (!streamDoc.exists) {
+      throw new functions.https.HttpsError("not-found", "Live stream not found.");
+    }
+
+    const channelName = streamDoc.data().channel_name;
+    const uid = context.auth.uid;
+    const role = RtcRole.PUBLISHER;
+
+    const token = RtcTokenBuilder.buildTokenWithUid(
+      appId,
+      appCertificate,
+      channelName,
+      0,
+      role,
+      Math.floor(Date.now() / 1000) + 3600
+    );
+
+    return {
+      appId,
+      token,
+      rtcUid: 0,
+      channelName,
+    };
+  } catch (err) {
+    if (err instanceof functions.https.HttpsError) throw err;
+    console.error("createAgoraRtcToken failed:", err);
+    throw new functions.https.HttpsError("internal", err.message);
+  }
+});
+
 exports.validatePromoCode = functions.https.onCall(async (data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError("unauthenticated", "You must be signed in.");
