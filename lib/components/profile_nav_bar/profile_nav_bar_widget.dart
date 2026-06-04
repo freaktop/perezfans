@@ -63,12 +63,35 @@ class _ProfileNavBarWidgetState extends State<ProfileNavBarWidget> {
                   buttonSize: 50.0,
                   icon: Icon(
                     Icons.home_rounded,
-                    color: Color(0xFF9299A1),
+                    color: Colors.white,
                     size: 30.0,
                   ),
                   onPressed: () async {
                     context.pushNamed(
                       HomeWidget.routeName,
+                      extra: <String, dynamic>{
+                        '__transition_info__': TransitionInfo(
+                          hasTransition: true,
+                          transitionType: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 0),
+                        ),
+                      },
+                    );
+                  },
+                ),
+                FlutterFlowIconButton(
+                  borderColor: Colors.transparent,
+                  borderRadius: 30.0,
+                  borderWidth: 1.0,
+                  buttonSize: 50.0,
+                  icon: Icon(
+                    Icons.explore,
+                    color: Colors.white,
+                    size: 30.0,
+                  ),
+                  onPressed: () async {
+                    context.pushNamed(
+                      ExploreWidget.routeName,
                       extra: <String, dynamic>{
                         '__transition_info__': TransitionInfo(
                           hasTransition: true,
@@ -148,12 +171,44 @@ class _ProfileNavBarWidgetState extends State<ProfileNavBarWidget> {
                   borderWidth: 1.0,
                   buttonSize: 50.0,
                   icon: Icon(
-                    Icons.person,
-                    color: FlutterFlowTheme.of(context).primaryText,
+                    Icons.live_tv,
+                    color: Colors.white,
                     size: 30.0,
                   ),
-                  onPressed: () {
-                    context.goNamed(ProfileWidget.routeName);
+                  onPressed: () async {
+                    context.pushNamed(
+                      CreatorHubWidget.routeName,
+                      extra: <String, dynamic>{
+                        '__transition_info__': TransitionInfo(
+                          hasTransition: true,
+                          transitionType: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 0),
+                        ),
+                      },
+                    );
+                  },
+                ),
+                FlutterFlowIconButton(
+                  borderColor: Colors.transparent,
+                  borderRadius: 30.0,
+                  borderWidth: 1.0,
+                  buttonSize: 50.0,
+                  icon: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                    size: 30.0,
+                  ),
+                  onPressed: () async {
+                    context.pushNamed(
+                      ProfileWidget.routeName,
+                      extra: <String, dynamic>{
+                        '__transition_info__': TransitionInfo(
+                          hasTransition: true,
+                          transitionType: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 0),
+                        ),
+                      },
+                    );
                   },
                 ),
               ],
