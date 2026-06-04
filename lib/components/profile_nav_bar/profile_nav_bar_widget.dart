@@ -153,7 +153,7 @@ class _ProfileNavBarWidgetState extends State<ProfileNavBarWidget> {
                     size: 30.0,
                   ),
                   onPressed: () {
-                    print('IconButton pressed ...');
+                    context.goNamed(ProfileWidget.routeName);
                   },
                 ),
               ],

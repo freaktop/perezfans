@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/backend/backend.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '/index.dart';
 import 'vault_model.dart';
 export 'vault_model.dart';
 
@@ -80,7 +81,7 @@ class _VaultWidgetState extends State<VaultWidget>
                 hoverColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 onTap: () async {
-                  context.pushNamed('NewVaultRequest');
+                  context.pushNamed(NewVaultRequestWidget.routeName);
                 },
                 child: Icon(
                   Icons.add_circle_outline,
